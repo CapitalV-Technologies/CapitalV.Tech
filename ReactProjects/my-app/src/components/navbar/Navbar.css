@@ -1,0 +1,24 @@
+.navbar {
+	display: flex;
+	font-size: .5rem;
+	font-family: 'Times New Roman', Times, serif;
+	background-color: rgb(66, 64, 64);
+	color: white;
+	width: 100%;
+}
+
+.header {
+	margin-left: 1rem;
+}
+
+.bars-icon {
+	margin-left: 1rem;
+	margin-top: .13rem;
+}
+
+.company {
+	margin-top: .4rem;
+	margin-left: 72.5rem;
+	font-size: .65rem;
+	font-weight: bold;
+}
