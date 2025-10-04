@@ -12,7 +12,7 @@ export default function SideBar({isVisible}: SidebarProps) {
             label: "Home",
             id: "1",
             icon: "pi pi-home",
-            url: '/yourmom',
+            url: '/app',
         },
         {
             label: "Resins",
@@ -24,12 +24,12 @@ export default function SideBar({isVisible}: SidebarProps) {
             label: "Contact",
             id: "3",
             icon: "pi pi-address-book",
-            url: '/yourmom',
+            url: 'app/contact',
         }
     ]
     return (
-        <div className={isVisible ? "sidebar-open" : "sidebar-close"}>
-            <h1 className="sidebar-header">Hello</h1>
+        <div className={isVisible ? "sidebar sidebar-open" : "sidebar sidebar-close"}>
+            <h1 className="sidebar-header">Menu</h1>
             <div>
             <PanelMenu model={menu_items}/>
             </div>
