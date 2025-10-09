@@ -3,7 +3,7 @@ import Layout from './components/layout/Layout.tsx';
 import '../src/styles/colors.css';
 import ContactPage from './components/pages/ContactPage.tsx';
 import NotFoundPage from './components/pages/NotFoundPage.tsx';
-import LoginPage from './components/pages/LoginPage.tsx';
+import LoginPage from './components/pages/login_page/LoginPage.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 function App() {
