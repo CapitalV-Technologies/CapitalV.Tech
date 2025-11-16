@@ -19,10 +19,8 @@ export default function Layout() {
         <Navbar toggleSidebar={toggle}/>
         </div>
         <div className="body"> 
-            <div className="sidebar-component">
         <Sidebar isVisible={visible}/>
-        </div>
-        <div className="page-component"> 
+        <div className={visible ? "page-component-open" : "page-component-close"}> 
             <Outlet />
         </div>
         </div>
