@@ -1,9 +1,10 @@
-.layout {
+.resin-layout {
     display: flex;
     height: 44rem;
     width: 100%;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .dropdowns {

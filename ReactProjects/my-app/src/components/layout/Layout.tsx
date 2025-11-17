@@ -20,7 +20,7 @@ export default function Layout() {
         </div>
         <div className="body"> 
         <Sidebar isVisible={visible}/>
-        <div className={visible ? "page-component-open" : "page-component-close"}> 
+        <div className="page-component"> 
             <Outlet />
         </div>
         </div>

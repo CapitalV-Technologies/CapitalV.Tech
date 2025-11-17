@@ -1,5 +1,6 @@
+import './ContactPage.css';
 
-export default function LoginPage() {
+export default function ContactPage() {
 
     return (
         <div>

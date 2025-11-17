@@ -1,9 +1,25 @@
 .footer {
 	display: flex;
+        align-items: center;
+        justify-content: right;
 	font-size: .5rem;
 	font-family: 'Times New Roman', Times, serif;
         background-color: var(--Navbar-Footer);
         color: var(--Primary-Text);
         width: 100%;
         height: 100%;
+}
+
+.footer-logout-button {
+        display: flex;
+	width: 5%;
+	font-size: 1rem;
+	background-color: var(--Navbar-Footer);
+	color: var(--Primary-Text);
+        font-family: 'Times New Roman', Times, serif;
+	cursor: pointer;
+        border-color: var(--Primary-Text);
+        border-width: 2px;
+        margin-right: 1rem;
+
 }

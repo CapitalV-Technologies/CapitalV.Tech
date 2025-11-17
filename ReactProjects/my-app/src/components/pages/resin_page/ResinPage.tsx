@@ -86,7 +86,7 @@ export default function ResinPage() {
         { name: 'Paris', code: 'PRS' }
     ];
     return (
-        <div className="layout">
+        <div className="resin-layout">
             <div className="listboxes">
             <ListBox filter value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
             className="w-full md:w-14rem" listStyle={{ maxHeight: '50px' }} />

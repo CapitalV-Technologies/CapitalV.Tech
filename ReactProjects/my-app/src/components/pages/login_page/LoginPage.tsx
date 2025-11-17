@@ -12,7 +12,7 @@ export default function LoginPage() {
       };
 
     return (
-        <div className="layout">
+        <div className="login-layout">
             <p>Here for Resins?</p>
             <div>
             <InputText placeholder="Username" className="username-input"/>

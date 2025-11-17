@@ -1,8 +1,8 @@
 import './App.css';
 import Layout from './components/layout/Layout.tsx';
 import '../src/styles/colors.css';
-import ContactPage from './components/pages/ContactPage.tsx';
-import NotFoundPage from './components/pages/NotFoundPage.tsx';
+import ContactPage from './components/pages/contact_page/ContactPage.tsx';
+import NotFoundPage from './components/pages/error_page/ErrorPage.tsx';
 import LoginPage from './components/pages/login_page/LoginPage.tsx';
 import ResinPage from './components/pages/resin_page/ResinPage.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';

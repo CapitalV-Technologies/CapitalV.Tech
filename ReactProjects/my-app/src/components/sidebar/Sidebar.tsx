@@ -1,5 +1,6 @@
 import './Sidebar.css';
 import { PanelMenu } from 'primereact/panelmenu';
+import { useNavigate } from 'react-router-dom';
 
 type SidebarProps = {
     isVisible: boolean;
@@ -7,24 +8,33 @@ type SidebarProps = {
 
 export default function SideBar({isVisible}: SidebarProps) {
 
+    const navigate = useNavigate();
+
     const menu_items = [
         {
             label: "Home",
             id: "1",
             icon: "pi pi-home",
-            url: '/app',
+            command: () => {
+                navigate('/app')
+            },
+            
         },
         {
             label: "Resins",
             id: "2",
             icon: "pi pi-wrench",
-            url: 'app/resin',
+            command: () => {
+                navigate('/app/resin')
+            },
         },
         {
             label: "Contact",
             id: "3",
             icon: "pi pi-address-book",
-            url: 'app/contact',
+            command: () => {
+                navigate('/app/contact')
+            },
         }
     ]
     return (
