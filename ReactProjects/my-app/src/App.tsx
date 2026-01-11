@@ -6,6 +6,7 @@ import NotFoundPage from './components/pages/error_page/ErrorPage.tsx';
 import LoginPage from './components/pages/login_page/LoginPage.tsx';
 import ResinPage from './components/pages/resin_page/ResinPage.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ProtectedRoute from './routes/ProtectedRoute';
 
 function App() {
 
@@ -17,7 +18,11 @@ function App() {
 // ROUTER ISSUE. CLICK ON RESINS PAGE, THEN CLICK ON CONTACTS
 {
   path: '/app',
-  element: <Layout />,
+  element: (
+  <ProtectedRoute>
+    <Layout />
+  </ProtectedRoute>
+  ),
   children: [
     {
       path: 'contact',
@@ -30,6 +35,7 @@ function App() {
   ]
 },
 ]);
+
   return (
     <div>
       <RouterProvider router={router}/>
