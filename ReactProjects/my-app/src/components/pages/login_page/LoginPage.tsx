@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,9 @@ export default function LoginPage() {
 
       const navigate = useNavigate();
 
-      const goToApp = () => {
+      const goToApp = (e: React.FormEvent) => {
+        // Prevent Page refresh
+        e.preventDefault();
         signIn(username, password);
       };
 
@@ -29,6 +31,8 @@ export default function LoginPage() {
         };
 
     return (
+        // Allow ENTER key to call goToApp Function
+        <form onSubmit={goToApp}>
         <div className="login-layout">
             <p>Here for Resins?</p>
             <div>
@@ -38,8 +42,9 @@ export default function LoginPage() {
             <InputText placeholder="Password" type="password" className="password-input" onChange={(e) => setPassword(e.target.value)}/>
             </div>
             <div>
-            <Button onClick={goToApp} label="Submit"/>
+            <Button onClick={goToApp} label="Login"/>
             </div>
         </div>
+        </form>
     )
 }
