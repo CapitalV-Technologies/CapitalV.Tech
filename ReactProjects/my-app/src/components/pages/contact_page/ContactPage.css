@@ -1,0 +1,16 @@
+.contact-layout {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.paragraph {
+    padding: 1rem;
+    flex-direction: row;
+    border: 1px var(--solid-black);
+    font-size: larger;
+    margin: 1rem;
+}

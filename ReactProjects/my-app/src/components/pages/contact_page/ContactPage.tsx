@@ -1,15 +1,18 @@
 import './ContactPage.css';
-import { useAuth } from '../../../auth/AuthContext';
 
 export default function ContactPage() {
 
-   const { user } = useAuth();
-
-
     return (
         
-        <div>
-            <h1>{user?.email ?? "Should never see this Message"}</h1>
+        <div className="contact-layout">
+            <div className="paragraph">
+            <b> Want more Resins? </b>
+            <p> Contact Sean at XXX-XXX-XXXX</p>
+            </div>
+            <div className="paragraph">
+            <b > Have Feedback on the Website? </b>
+            <p> Contact Micah at XXX-XXX-XXXX</p>
+            </div>
         </div>
     )
 }

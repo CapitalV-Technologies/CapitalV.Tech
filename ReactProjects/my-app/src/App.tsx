@@ -5,6 +5,7 @@ import ContactPage from './components/pages/contact_page/ContactPage.tsx';
 import NotFoundPage from './components/pages/error_page/ErrorPage.tsx';
 import LoginPage from './components/pages/login_page/LoginPage.tsx';
 import ResinPage from './components/pages/resin_page/ResinPage.tsx';
+import SettingsPage from './components/pages/settings_page/SettingsPage.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ProtectedRoute from './routes/ProtectedRoute';
 
@@ -31,6 +32,10 @@ function App() {
     {
       path: 'resin',
       element: <ResinPage />
+    },
+    {
+      path: 'settings',
+      element: <SettingsPage />
     },
   ]
 },

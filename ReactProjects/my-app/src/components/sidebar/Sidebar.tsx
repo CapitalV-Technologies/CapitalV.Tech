@@ -35,6 +35,14 @@ export default function SideBar({isVisible}: SidebarProps) {
             command: () => {
                 navigate('/app/contact')
             },
+        },
+        {
+            label: "Settings",
+            id: "4",
+            icon: "pi pi-cog",
+            command: () => {
+                navigate('/app/settings')
+            },
         }
     ]
     return (
