@@ -14,7 +14,7 @@ export default function Layout() {
         setVisible(!visible);
     }
     return (
-        <div>
+        <div className="layout">
         <div className="navbar-component">
         <Navbar toggleSidebar={toggle}/>
         </div>
