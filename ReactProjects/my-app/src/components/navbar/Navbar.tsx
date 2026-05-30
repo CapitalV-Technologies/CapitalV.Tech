@@ -12,7 +12,7 @@ export default function Navbar({toggleSidebar}: NavbarProps) {
     return (
         <div className="navbar">
             <Button className='navbar-button' icon='pi pi-bars' onClick={toggleSidebar}/>
-            <h1 className='navbar-header'>Project Name</h1>
+            <h1 className='navbar-header'>Project Res</h1>
             <p className='navbar-company'>CapitalVTech</p>
         </div>
     );

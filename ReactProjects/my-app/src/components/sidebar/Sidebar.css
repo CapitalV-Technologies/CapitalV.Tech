@@ -36,6 +36,7 @@
 
 
 .p-menuitem-text {
+    
     color: var(--Primary-Text);
     width: 20rem;
     font-family: 'Times New Roman', Times, serif;
