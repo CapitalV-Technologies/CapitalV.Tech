@@ -4,22 +4,26 @@ import { Chart } from 'primereact/chart';
 import { supabase } from "../../../services/supabaseClient";
 import { Button } from 'primereact/button';
 import { useState, useEffect } from "react";
-import { fontString } from 'chart.js/helpers';
 
 
 export default function ResinPage() {
 
 
+    interface ItemDataRow {
+        temperature: number;
+        [key: string]: any;
+    }
+
     // Create variables to hold selected resins values
-    const [selectedResin1, setSelectedResin1] = useState(null);
-    const [selectedResin2, setSelectedResin2] = useState(null);
-    const [selectedResin3, setSelectedResin3] = useState(null);
+    const [selectedResin1, setSelectedResin1] = useState<{ name: string; id: string } | null>(null);
+    const [selectedResin2, setSelectedResin2] = useState<{ name: string; id: string } | null>(null);
+    const [selectedResin3, setSelectedResin3] = useState<{ name: string; id: string } | null>(null);
 
     const [selectedProperty1, setSelectedProperty1] = useState<{ name: string } | null>(null);;
-    const [selectedProperty2, setSelectedProperty2] =useState<{ name: string } | null>(null);;
+    const [selectedProperty2, setSelectedProperty2] = useState<{ name: string } | null>(null);;
 
     // Create variable for available resins
-    const [resins, setResins] = useState<{ name: string}[]>([]);
+    const [resins, setResins] = useState<{ name: string, id: string}[]>([]);
 
    
     const [chartData, setChartData] = useState({});
@@ -30,47 +34,21 @@ export default function ResinPage() {
     useEffect(() => {
 
         // Call getResins Function
-        getResins();
+        getResinsNames();
         
     }, []);
 
     
 
     const refreshGraph = async () => {
+
+        getResinsData();
+
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-        const data = {
-            datasets: [
-                {
-                    label: String(selectedProperty2?.name || "Pick a property!"),
-                    data: [
-                        { x: 0,  y: 65 },
-                        { x: 12, y: 59 },
-                        { x: 25, y: 80 },
-                        { x: 40, y: 81 }
-                    ],
-                    fill: false,
-                    borderColor: documentStyle.getPropertyValue('--blue-500'),
-                    yAxisID: 'y',
-                    tension: 0.4
-                },
-                {
-                    label: String(selectedProperty1?.name || "Pick a property!"),
-                    data: [
-                            { x: 5,  y: 28 },
-                            { x: 18, y: 48 },
-                            { x: 22, y: 40 },
-                            { x: 55, y: 19 }
-                    ],
-                    fill: false,
-                    borderColor: documentStyle.getPropertyValue('--pink-500'),
-                    yAxisID: 'y1',
-                    tension: 0.4
-                }
-            ]
-        };
+        
         const options = {
             responsive: true,
             maintainAspectRatio: false,
@@ -127,18 +105,17 @@ export default function ResinPage() {
             }
         };
 
-        setChartData(data);
         setChartOptions(options);
     }
 
     
 
 
-    const getResins = async () => {
+    const getResinsNames = async () => {
         
             const { data, error } = await supabase
                 .from("item_master")
-                .select("item_name")
+                .select("*")
         
             if (error) {
                 console.error('Login error:', error.message);
@@ -151,7 +128,8 @@ export default function ResinPage() {
         
                 const formattedResins = data.map((item) => {
                     return {
-                        name: item.item_name
+                        name: item.item_name,
+                        id: item.item_id
                     };
                 });
 
@@ -161,8 +139,75 @@ export default function ResinPage() {
             };
         };
 
+        const getResinsData = async () => {
+
+            if (!selectedResin1) return;
+
+            if (!selectedProperty1) {
+                 console.log("Waiting for user to select a property...");
+                return; 
+                }
+
+            if (!selectedProperty2) {
+                 console.log("Waiting for user to select a property...");
+                return; 
+                }
+        
+            const { data, error } = await supabase
+                .from("item_data")
+                .select("temperature, item_id, " + selectedProperty1.name + ", " + selectedProperty2.name)
+                .eq("item_id", selectedResin1.id)
+                .range(0, 3000)
+                .returns<ItemDataRow[]>()
+        
+            if (error) {
+                console.error('Login error:', error.message);
+                return;
+            }
+    
+            console.log("My data:", data)
+
+            //if (data) {
+        
+                const formattedData1 = data.map((item) => {
+                    return { x: item.temperature, y: item[selectedProperty1.name] };
+                });
+              
+            //setResins(formattedResins);
+
+            const formattedData2 = data.map((item) => {
+                    return { x: item.temperature, y: item[selectedProperty2.name] };
+                });
+               
+    
+            //};
+
+           const data2 = {
+            datasets: [
+                {
+                    label: String(selectedProperty1?.name || "Pick a property!"),
+                    data: formattedData1,
+                    fill: false,
+                    borderColor: "black",
+                    yAxisID: 'y',
+                    tension: 0.4
+                },
+                {
+                    label: String(selectedProperty2?.name || "Pick a property!"),
+                    data: formattedData2,
+                    fill: false,
+                    borderColor: "blue",
+                    yAxisID: 'y1',
+                    tension: 0.4
+                }
+            ]
+        };
+
+        setChartData(data2);
+        };
+
     const properties = [
-        {name: "tempature"},
+        {name: "temperature"},
         {name: "storage_modulus"},
         {name: "loss_modulus"},
         {name: "tan_delta"}
