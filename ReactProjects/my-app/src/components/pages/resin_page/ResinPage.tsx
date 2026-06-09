@@ -218,25 +218,31 @@ export default function ResinPage() {
     return (
         <div className="resin-layout">
             <div className="dropdowns">
-            <h3> Select Resins </h3>
 
+            <div className="titles">
+                <h3> Select Resins </h3>
+            </div>
+            
             <Dropdown value={selectedResin1} onChange={(e) => setSelectedResin1(e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 1" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/>
             <Dropdown value={selectedResin2} onChange={(e) => setSelectedResin2(e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 2" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/>
             <Dropdown value={selectedResin3} onChange={(e) => setSelectedResin3(e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 3" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/> 
-            
-            <h3> Select Properties </h3>
+            <div className="titles">
+                <h3> Select Properties </h3>
+            </div>
+            <div className="subsection">
             <p> X-axis = temperature</p>
+            </div>
 
             <Dropdown value={selectedProperty1} onChange={(e) => setSelectedProperty1(e.value)} options={properties} optionLabel="name"
                 showClear placeholder="Select Property 1" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/> 
             <Dropdown value={selectedProperty2} onChange={(e) => setSelectedProperty2(e.value)} options={properties} optionLabel="name"
-                showClear placeholder="Select Property 2" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/> 
+                showClear placeholder="Select Property 2" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/>
+            
             <Button label="Compare" onClick={refreshGraph}/>
             </div>
-            
             <Chart className="line-graph" type="line" data={chartData} options={chartOptions}/>
             
         </div>
