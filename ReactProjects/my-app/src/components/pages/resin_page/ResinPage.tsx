@@ -4,26 +4,22 @@ import { Chart } from 'primereact/chart';
 import { supabase } from "../../../services/supabaseClient";
 import { Button } from 'primereact/button';
 import { useState, useEffect } from "react";
+import { getResinsData2 } from './GetResinData.tsx';
+import type { ItemDataRow, Resin_t, Data_t } from './Interfaces.tsx';
 
 
 export default function ResinPage() {
 
-
-    interface ItemDataRow {
-        temperature: number;
-        [key: string]: any;
-    }
-
     // Create variables to hold selected resins values
-    const [selectedResin1, setSelectedResin1] = useState<{ name: string; id: string } | null>(null);
-    const [selectedResin2, setSelectedResin2] = useState<{ name: string; id: string } | null>(null);
-    const [selectedResin3, setSelectedResin3] = useState<{ name: string; id: string } | null>(null);
+    const [selectedResin1, setSelectedResin1] = useState< Resin_t | null>(null);
+    const [selectedResin2, setSelectedResin2] = useState< Resin_t | null>(null);
+    const [selectedResin3, setSelectedResin3] = useState< Resin_t | null>(null);
 
-    const [selectedProperty1, setSelectedProperty1] = useState<{ name: string } | null>(null);;
-    const [selectedProperty2, setSelectedProperty2] = useState<{ name: string } | null>(null);;
+    const [selectedProperty1, setSelectedProperty1] = useState< Resin_t | null>(null);;
+    const [selectedProperty2, setSelectedProperty2] = useState< Resin_t | null>(null);;
 
     // Create variable for available resins
-    const [resins, setResins] = useState<{ name: string, id: string}[]>([]);
+    const [resins, setResins] = useState<Resin_t[]>([]);
 
    
     const [chartData, setChartData] = useState({});
@@ -141,8 +137,6 @@ export default function ResinPage() {
 
         const getResinsData = async () => {
 
-            if (!selectedResin1) return;
-
             if (!selectedProperty1) {
                  console.log("Waiting for user to select a property...");
                 return; 
@@ -152,40 +146,35 @@ export default function ResinPage() {
                  console.log("Waiting for user to select a property...");
                 return; 
                 }
-        
-            const { data, error } = await supabase
-                .from("item_data")
-                .select("temperature, item_id, " + selectedProperty1.name + ", " + selectedProperty2.name)
-                .eq("item_id", selectedResin1.id)
-                .range(0, 3000)
-                .returns<ItemDataRow[]>()
-        
-            if (error) {
-                console.error('Login error:', error.message);
-                return;
+            
+
+            var formattedData1: Data_t[] | undefined
+            var formattedData2: Data_t[] | undefined
+            var formattedData3: Data_t[] | undefined
+            var formattedData4: Data_t[] | undefined
+            var formattedData5: Data_t[] | undefined
+            var formattedData6: Data_t[] | undefined
+
+            
+            if (selectedResin1) {
+                formattedData1 = await getResinsData2(selectedResin1.id, selectedProperty1.name)
+                formattedData2 = await  getResinsData2(selectedResin1.id, selectedProperty2.name)
             }
-    
-            console.log("My data:", data)
+            if (selectedResin2) {
+                formattedData3 = await getResinsData2(selectedResin2.id, selectedProperty1.name)
+                formattedData4 = await getResinsData2(selectedResin2.id, selectedProperty2.name)
+            }
+            if (selectedResin3) {
+                formattedData5 = await getResinsData2(selectedResin3.id, selectedProperty1.name)
+                formattedData6 = await getResinsData2(selectedResin3.id, selectedProperty2.name)
+            }
+           
+            const datasets = []
 
-            //if (data) {
-        
-                const formattedData1 = data.map((item) => {
-                    return { x: item.temperature, y: item[selectedProperty1.name] };
-                });
-              
-            //setResins(formattedResins);
+            if (selectedResin1) {
 
-            const formattedData2 = data.map((item) => {
-                    return { x: item.temperature, y: item[selectedProperty2.name] };
-                });
-               
-    
-            //};
-
-           const data2 = {
-            datasets: [
-                {
-                    label: String(selectedProperty1?.name || "Pick a property!"),
+                datasets.push({
+                    label: selectedResin1.name + ": " + selectedProperty1.name,
                     data: formattedData1,
                     fill: false,
                     borderColor: "black",
@@ -193,21 +182,60 @@ export default function ResinPage() {
                     tension: 0.4
                 },
                 {
-                    label: String(selectedProperty2?.name || "Pick a property!"),
+                    label: selectedResin1.name + ": " + selectedProperty2.name,
                     data: formattedData2,
                     fill: false,
                     borderColor: "blue",
                     yAxisID: 'y1',
                     tension: 0.4
-                }
-            ]
-        };
+                })
+            }
+             if (selectedResin2) {
+                datasets.push({
+                    label: selectedResin2.name + ": " + selectedProperty1.name,
+                    data: formattedData3,
+                    fill: false,
+                    borderColor: "pink",
+                    yAxisID: 'y',
+                    tension: 0.4
+                },
+                {
+                    label: selectedResin2.name + ": " + selectedProperty2.name,
+                    data: formattedData4,
+                    fill: false,
+                    borderColor: "green",
+                    yAxisID: 'y1',
+                    tension: 0.4
+                })
+            }
+             if (selectedResin3) {
+                datasets.push({
+                    label: selectedResin3.name + ": " + selectedProperty1.name,
+                    data: formattedData5,
+                    fill: false,
+                    borderColor: "red",
+                    yAxisID: 'y',
+                    tension: 0.4
+                },
+                {
+                    label: selectedResin3.name + ": " + selectedProperty2.name,
+                    data: formattedData6,
+                    fill: false,
+                    borderColor: "yellow",
+                    yAxisID: 'y1',
+                    tension: 0.4
+                })
+            }
+        
 
+        const data2 = {
+                datasets: datasets
+            }
+        
         setChartData(data2);
         };
 
     const properties = [
-        {name: "temperature"},
         {name: "storage_modulus"},
         {name: "loss_modulus"},
         {name: "tan_delta"}
@@ -222,7 +250,7 @@ export default function ResinPage() {
             <div className="titles">
                 <h3> Select Resins </h3>
             </div>
-            
+
             <Dropdown value={selectedResin1} onChange={(e) => setSelectedResin1(e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 1" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/>
             <Dropdown value={selectedResin2} onChange={(e) => setSelectedResin2(e.value)} options={resins} optionLabel="name"
