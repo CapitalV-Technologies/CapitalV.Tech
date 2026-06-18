@@ -54,6 +54,22 @@ export default function ResinPage() {
                     labels: {
                         color: textColor
                     }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems: any[]) {
+                            // The title callback receives an array of items. 
+                            // Grab the first one to read the x value.
+                            if (tooltipItems.length > 0 && tooltipItems[0].parsed) {
+                                return tooltipItems[0].parsed.x + " °C";
+                            }
+                            return '';
+                        },
+                        // Optional: add a footer to show extra info
+                        footer: function(tooltipItems: any) {
+                            return 'Potential Footer';
+                        }
+                    }
                 }
             },
             scales: {
