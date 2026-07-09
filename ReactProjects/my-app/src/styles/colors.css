@@ -5,3 +5,11 @@
     --light-gray: rgb(108, 103, 103);
     --solid-black: solid black;
 }
+
+[color-theme="dark"] {
+    --Navbar-Footer: rgb(66, 63, 63);
+    --Primary-Text: white;
+    --Primary-Color: rgb(28, 115, 221);
+    --light-gray: rgb(108, 103, 103);
+    --solid-black: solid white;
+}

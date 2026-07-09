@@ -1,11 +1,10 @@
 import './ResinPage.css';
 import { Dropdown } from 'primereact/dropdown';
 import { Chart } from 'primereact/chart';
-import { supabase } from "../../../services/supabaseClient";
 import { Button } from 'primereact/button';
 import { useState, useEffect } from "react";
-import { getResinsData2 } from './GetResinData.tsx';
-import type { ItemDataRow, Resin_t, Data_t } from './Interfaces.tsx';
+import { getSingularResinData, getResinNames_Helper } from './HelperFunctions.tsx';
+import type {Resin_t, Property_t, Data_t } from './Interfaces.tsx';
 
 
 export default function ResinPage() {
@@ -15,26 +14,27 @@ export default function ResinPage() {
     const [selectedResin2, setSelectedResin2] = useState< Resin_t | null>(null);
     const [selectedResin3, setSelectedResin3] = useState< Resin_t | null>(null);
 
-    const [selectedProperty1, setSelectedProperty1] = useState< Resin_t | null>(null);;
-    const [selectedProperty2, setSelectedProperty2] = useState< Resin_t | null>(null);;
+    // Create variables to hold selected property values
+    const [selectedProperty1, setSelectedProperty1] = useState< Property_t | null>(null);;
+    const [selectedProperty2, setSelectedProperty2] = useState< Property_t | null>(null);;
+    const [selectedProperty3, setSelectedProperty3] = useState< Property_t | null>(null);;
 
-    // Create variable for available resins
+    // Create variable to hold all available resins
     const [resins, setResins] = useState<Resin_t[]>([]);
 
-   
+    // Create chart variables
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
 
-
     // This function takes effect on page load
     useEffect(() => {
-
-        // Call getResins Function
-        getResinsNames();
-        
+        getResinsNames();   
     }, []);
 
-    
+    const getResinsNames = async() => {
+        const formattedResins = await getResinNames_Helper();
+        setResins(formattedResins);
+    }
 
     const refreshGraph = async () => {
 
@@ -90,25 +90,37 @@ export default function ResinPage() {
                         }
                     }
                 },
-                y: {
+                Property1: {
                     type: 'linear',
                     display: true,
                     position: 'left',
                     title: {
                         display: true,
-                        text: String(selectedProperty1?.name || "Pick a property!")
+                        text: String(selectedProperty1 ? selectedProperty1.name : "Pick a property!")
                     },
                     grid: {
                         drawOnChartArea: false, 
                     },
                 },
-                y1: {
+                Property2: {
                     type: 'linear',
                     display: true,
                     position: 'right',
                     title: {
                         display: true,
-                        text: String(selectedProperty2?.name || "Pick a property!")
+                        text: String(selectedProperty2 ? selectedProperty2.name : "Pick a property!")
+                    },
+                    grid: {
+                        drawOnChartArea: false, 
+                    },
+                },
+                Property3: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: String(selectedProperty3 ? selectedProperty3.name : "Pick a property!")
                     },
                     grid: {
                         drawOnChartArea: false, 
@@ -120,135 +132,118 @@ export default function ResinPage() {
         setChartOptions(options);
     }
 
-    
-
-
-    const getResinsNames = async () => {
-        
-            const { data, error } = await supabase
-                .from("item_master")
-                .select("*")
-        
-            if (error) {
-                console.error('Login error:', error.message);
-                return;
-            }
-    
-            console.log("My items:", data)
-
-            if (data) {
-        
-                const formattedResins = data.map((item) => {
-                    return {
-                        name: item.item_name,
-                        id: item.item_id
-                    };
-                });
-
-            setResins(formattedResins);
-
-    
-            };
-        };
 
         const getResinsData = async () => {
 
-            if (!selectedProperty1) {
-                 console.log("Waiting for user to select a property...");
-                return; 
-                }
-
-            if (!selectedProperty2) {
-                 console.log("Waiting for user to select a property...");
-                return; 
-                }
+            var resin1_property1: Data_t[] | null = await getSingularResinData(selectedResin1, selectedProperty1)
+            var resin1_property2: Data_t[] | null = await getSingularResinData(selectedResin1, selectedProperty2)
+            var resin1_property3: Data_t[] | null = await getSingularResinData(selectedResin1, selectedProperty3)
+            var resin2_property1: Data_t[] | null = await getSingularResinData(selectedResin2, selectedProperty1)
+            var resin2_property2: Data_t[] | null = await getSingularResinData(selectedResin2, selectedProperty2)
+            var resin2_property3: Data_t[] | null = await getSingularResinData(selectedResin2, selectedProperty3)
+            var resin3_property1: Data_t[] | null = await getSingularResinData(selectedResin3, selectedProperty1)
+            var resin3_property2: Data_t[] | null = await getSingularResinData(selectedResin3, selectedProperty2)
+            var resin3_property3: Data_t[] | null = await getSingularResinData(selectedResin3, selectedProperty3)
             
-
-            var formattedData1: Data_t[] | undefined
-            var formattedData2: Data_t[] | undefined
-            var formattedData3: Data_t[] | undefined
-            var formattedData4: Data_t[] | undefined
-            var formattedData5: Data_t[] | undefined
-            var formattedData6: Data_t[] | undefined
-
-            
-            if (selectedResin1) {
-                formattedData1 = await getResinsData2(selectedResin1.id, selectedProperty1.name)
-                formattedData2 = await  getResinsData2(selectedResin1.id, selectedProperty2.name)
-            }
-            if (selectedResin2) {
-                formattedData3 = await getResinsData2(selectedResin2.id, selectedProperty1.name)
-                formattedData4 = await getResinsData2(selectedResin2.id, selectedProperty2.name)
-            }
-            if (selectedResin3) {
-                formattedData5 = await getResinsData2(selectedResin3.id, selectedProperty1.name)
-                formattedData6 = await getResinsData2(selectedResin3.id, selectedProperty2.name)
-            }
            
             const datasets = []
 
-            if (selectedResin1) {
-
+            if (resin1_property1 != null) {
                 datasets.push({
-                    label: selectedResin1.name + ": " + selectedProperty1.name,
-                    data: formattedData1,
+                    label: selectedResin1!.name + ": " + selectedProperty1!.name,
+                    data: resin1_property1,
                     fill: false,
                     borderColor: "black",
-                    yAxisID: 'y',
+                    yAxisID: 'Property1',
                     tension: 0.4
-                },
-                {
-                    label: selectedResin1.name + ": " + selectedProperty2.name,
-                    data: formattedData2,
+                })
+            }
+            if (resin1_property2 != null) {
+                datasets.push({
+                    label: selectedResin1!.name + ": " + selectedProperty2!.name,
+                    data: resin1_property2,
                     fill: false,
                     borderColor: "blue",
-                    yAxisID: 'y1',
+                    yAxisID: 'Property2',
                     tension: 0.4
                 })
             }
-             if (selectedResin2) {
+            if (resin1_property3 != null) {
                 datasets.push({
-                    label: selectedResin2.name + ": " + selectedProperty1.name,
-                    data: formattedData3,
+                    label: selectedResin1!.name + ": " + selectedProperty3!.name,
+                    data: resin1_property3,
                     fill: false,
-                    borderColor: "pink",
-                    yAxisID: 'y',
-                    tension: 0.4
-                },
-                {
-                    label: selectedResin2.name + ": " + selectedProperty2.name,
-                    data: formattedData4,
-                    fill: false,
-                    borderColor: "green",
-                    yAxisID: 'y1',
+                    borderColor: "gray",
+                    yAxisID: 'Property3',
                     tension: 0.4
                 })
             }
-             if (selectedResin3) {
+            if (resin2_property1 != null) {
                 datasets.push({
-                    label: selectedResin3.name + ": " + selectedProperty1.name,
-                    data: formattedData5,
+                    label: selectedResin2!.name + ": " + selectedProperty1!.name,
+                    data: resin2_property1,
                     fill: false,
                     borderColor: "red",
-                    yAxisID: 'y',
-                    tension: 0.4
-                },
-                {
-                    label: selectedResin3.name + ": " + selectedProperty2.name,
-                    data: formattedData6,
-                    fill: false,
-                    borderColor: "yellow",
-                    yAxisID: 'y1',
+                    yAxisID: 'Property1',
                     tension: 0.4
                 })
             }
-        
-
-        const data2 = {
-                datasets: datasets
+            if (resin2_property2 != null) {
+                datasets.push({
+                    label: selectedResin2!.name + ": " + selectedProperty2!.name,
+                    data: resin2_property2,
+                    fill: false,
+                    borderColor: "green",
+                    yAxisID: 'Property2',
+                    tension: 0.4
+                })
             }
-        
-        setChartData(data2);
+            if (resin2_property3 != null) {
+                datasets.push({
+                    label: selectedResin2!.name + ": " + selectedProperty3!.name,
+                    data: resin2_property3,
+                    fill: false,
+                    borderColor: "yellow",
+                    yAxisID: 'Property3',
+                    tension: 0.4
+                })
+            }
+            if (resin3_property1 != null) {
+                datasets.push({
+                    label: selectedResin3!.name + ": " + selectedProperty1!.name,
+                    data: resin3_property1,
+                    fill: false,
+                    borderColor: "pink",
+                    yAxisID: 'Property1',
+                    tension: 0.4
+                })
+            }
+            if (resin3_property2 != null) {
+                datasets.push({
+                    label: selectedResin3!.name + ": " + selectedProperty2!.name,
+                    data: resin3_property2,
+                    fill: false,
+                    borderColor: "purple",
+                    yAxisID: 'Property2',
+                    tension: 0.4
+                })
+            }
+            if (resin3_property3 != null) {
+                datasets.push({
+                    label: selectedResin3!.name + ": " + selectedProperty3!.name,
+                    data: resin3_property3,
+                    fill: false,
+                    borderColor: "brown",
+                    yAxisID: 'Property3',
+                    tension: 0.4
+                })
+            }
+
+            const data2 = {
+                    datasets: datasets
+                }
+            
+            setChartData(data2);
         };
 
     const properties = [
@@ -268,11 +263,11 @@ export default function ResinPage() {
             </div>
 
             <Dropdown value={selectedResin1} onChange={(e) => setSelectedResin1(e.value)} options={resins} optionLabel="name"
-                showClear placeholder="Select Resin 1" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/>
+                showClear placeholder="Select Resin 1" filter={true} filterBy="name" checkmark={true}/>
             <Dropdown value={selectedResin2} onChange={(e) => setSelectedResin2(e.value)} options={resins} optionLabel="name"
-                showClear placeholder="Select Resin 2" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/>
+                showClear placeholder="Select Resin 2" filter={true} filterBy="name" checkmark={true}/>
             <Dropdown value={selectedResin3} onChange={(e) => setSelectedResin3(e.value)} options={resins} optionLabel="name"
-                showClear placeholder="Select Resin 3" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/> 
+                showClear placeholder="Select Resin 3" filter={true} filterBy="name" checkmark={true}/> 
             <div className="titles">
                 <h3> Select Properties </h3>
             </div>
@@ -281,11 +276,12 @@ export default function ResinPage() {
             </div>
 
             <Dropdown value={selectedProperty1} onChange={(e) => setSelectedProperty1(e.value)} options={properties} optionLabel="name"
-                showClear placeholder="Select Property 1" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/> 
+                showClear placeholder="Select Property 1" filter={true} filterBy="name" checkmark={true}/> 
             <Dropdown value={selectedProperty2} onChange={(e) => setSelectedProperty2(e.value)} options={properties} optionLabel="name"
-                showClear placeholder="Select Property 2" className="w-full md:w-14rem" filter={true} filterBy="name" checkmark={true}/>
-            
-            <Button label="Compare" onClick={refreshGraph}/>
+                showClear placeholder="Select Property 2" filter={true} filterBy="name" checkmark={true}/>
+            <Dropdown value={selectedProperty3} onChange={(e) => setSelectedProperty3(e.value)} options={properties} optionLabel="name"
+                showClear placeholder="Select Property 3" filter={true} filterBy="name" checkmark={true}/>
+            <Button label="Refresh Graph" onClick={refreshGraph}/>
             </div>
             <Chart className="line-graph" type="line" data={chartData} options={chartOptions}/>
             
