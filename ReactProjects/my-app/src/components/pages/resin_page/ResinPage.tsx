@@ -2,13 +2,13 @@ import './ResinPage.css';
 import { Dropdown } from 'primereact/dropdown';
 import { Chart } from 'primereact/chart';
 import Classic_Button from '../../buttons/classic_button/Classic_Button.tsx'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getSingularResinData, getResinNames_Helper } from './HelperFunctions.tsx';
 import type {Resin_t, Property_t, Data_t } from './Interfaces.tsx';
-
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 export default function ResinPage() {
-
+    
     // Create variables to hold selected resins values
     const [selectedResin1, setSelectedResin1] = useState< Resin_t | null>(null);
     const [selectedResin2, setSelectedResin2] = useState< Resin_t | null>(null);
@@ -25,11 +25,19 @@ export default function ResinPage() {
     // Create chart variables
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
+    const chartRef = useRef<Chart>(null);
 
     // This function takes effect on page load
     useEffect(() => {
         getResinsNames();   
     }, []);
+
+    const resetZoom = () => {
+        if (chartRef.current) {
+            const chartInstance = chartRef.current.getChart();
+            chartInstance.resetZoom();
+        }
+    };
 
     const getResinsNames = async() => {
         const formattedResins = await getResinNames_Helper();
@@ -50,6 +58,21 @@ export default function ResinPage() {
             maintainAspectRatio: false,
             aspectRatio: 0.6,
             plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                    },
+                    zoom: {
+                    wheel: { 
+                        enabled: true,
+                        speed: 0.2
+                    },
+                    pinch: { 
+                        enabled: true 
+                    },
+                    mode: 'x',
+                    }
+                },
                 legend: {
                     labels: {
                         color: textColor
@@ -284,8 +307,11 @@ export default function ResinPage() {
             <div className="refresh-graph-button">
             <Classic_Button label="Refresh Graph" onClick={refreshGraph}></Classic_Button>
             </div>
+            <div className="reset-zoom-button">
+            <Classic_Button label="Reset Zoom" onClick={resetZoom}></Classic_Button>
             </div>
-            <Chart className="line-graph" type="line" data={chartData} options={chartOptions}/>
+            </div>
+            <Chart className="line-graph" type="line" data={chartData} options={chartOptions} plugins={[zoomPlugin]} ref={chartRef}/>
             
         </div>
     )
