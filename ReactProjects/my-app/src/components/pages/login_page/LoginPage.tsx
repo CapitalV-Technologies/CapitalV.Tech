@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
+import Classic_Button from '../../buttons/classic_button/Classic_Button.tsx'
 import { supabase } from "../../../services/supabaseClient";
 import './LoginPage.css';
 
@@ -34,15 +35,15 @@ export default function LoginPage() {
         // Allow ENTER key to call goToApp Function
         <form onSubmit={goToApp}>
         <div className="login-layout">
-            <p>Here for Resins?</p>
+            <p>ScienceDMA</p>
             <div>
             <InputText placeholder="Username" className="username-input" onChange={(e) => setUsername(e.target.value)} />
             </div>
             <div>
             <InputText placeholder="Password" type="password" className="password-input" onChange={(e) => setPassword(e.target.value)}/>
             </div>
-            <div>
-            <Button onClick={goToApp} label="Login"/>
+            <div className="login-classic-button">
+            <Classic_Button label="Login" onClick={goToApp}></Classic_Button>
             </div>
         </div>
         </form>

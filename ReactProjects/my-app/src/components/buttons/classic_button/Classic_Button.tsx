@@ -3,7 +3,7 @@ import { Button } from 'primereact/button';
 
 type ClassicButtonProps = {
 	label: string;
-	onClick: () => void;
+	onClick: (() => void) | ((e: React.FormEvent) => void);
 }
 
 export default function Classic_Button (props : ClassicButtonProps) {
