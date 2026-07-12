@@ -1,0 +1,19 @@
+.classic-button {
+    height: inherit;
+    width: inherit;
+    background-color: var(--Primary-Color);
+    color: var(--Primary-Text);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.classic-button:hover {
+    background-color: var(--Primary-Color-Darker);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px var(--Navbar-Footer);
+} 
+
+/* This is for Keyboard accessibility. Will show up eventually by clicking tab which iterates through the buttons  */
+.classic-button:focus-visible {
+    outline: 1.8px var(--solid-black);
+} 

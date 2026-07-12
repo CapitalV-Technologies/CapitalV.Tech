@@ -7,6 +7,11 @@
     flex-direction: row;
 }
 
+.refresh-graph-button {
+    height: 2rem;
+    width: 100%;
+}
+
 .dropdowns {
     margin-left: 1rem;
     display: flex;

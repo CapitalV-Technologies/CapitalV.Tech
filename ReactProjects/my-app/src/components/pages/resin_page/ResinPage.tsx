@@ -2,6 +2,7 @@ import './ResinPage.css';
 import { Dropdown } from 'primereact/dropdown';
 import { Chart } from 'primereact/chart';
 import { Button } from 'primereact/button';
+import Classic_Button from '../../buttons/classic_button/Classic_Button.tsx'
 import { useState, useEffect } from "react";
 import { getSingularResinData, getResinNames_Helper } from './HelperFunctions.tsx';
 import type {Resin_t, Property_t, Data_t } from './Interfaces.tsx';
@@ -282,6 +283,9 @@ export default function ResinPage() {
             <Dropdown value={selectedProperty3} onChange={(e) => setSelectedProperty3(e.value)} options={properties} optionLabel="name"
                 showClear placeholder="Select Property 3" filter={true} filterBy="name" checkmark={true}/>
             <Button label="Refresh Graph" onClick={refreshGraph}/>
+            <div className="refresh-graph-button">
+            <Classic_Button label="Refresh Graph" onClick={refreshGraph}></Classic_Button>
+            </div>
             </div>
             <Chart className="line-graph" type="line" data={chartData} options={chartOptions}/>
             

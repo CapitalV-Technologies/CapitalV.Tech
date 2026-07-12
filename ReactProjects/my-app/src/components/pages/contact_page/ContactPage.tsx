@@ -9,10 +9,6 @@ export default function ContactPage() {
             <b> Want more Resins? </b>
             <p> Contact Sean at example@icloud.com</p>
             </div>
-            <div className="paragraph">
-            <b > Have Feedback on the Website? </b>
-            <p> Contact Damon at example@icloud.com</p>
-            </div>
         </div>
     )
 }
