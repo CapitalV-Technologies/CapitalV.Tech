@@ -5,4 +5,18 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    gap: 5rem;
+}
+
+.settings-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 5rem;
+}
+
+.dark-mode-select-button {
+    width: 15rem;
+    height: 3rem;
 }
