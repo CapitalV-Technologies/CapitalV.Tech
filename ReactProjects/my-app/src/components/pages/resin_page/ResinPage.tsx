@@ -119,7 +119,8 @@ export default function ResinPage() {
                     position: 'left',
                     title: {
                         display: true,
-                        text: String(selectedProperty1 ? selectedProperty1.name : "Pick a property!")
+                        text: String(selectedProperty1 ? selectedProperty1.name : "Pick a property!"),
+                        padding: 15
                     },
                     grid: {
                         drawOnChartArea: false, 
@@ -131,7 +132,8 @@ export default function ResinPage() {
                     position: 'right',
                     title: {
                         display: true,
-                        text: String(selectedProperty2 ? selectedProperty2.name : "Pick a property!")
+                        text: String(selectedProperty2 ? selectedProperty2.name : "Pick a property!"),
+                        padding: 15
                     },
                     grid: {
                         drawOnChartArea: false, 
@@ -143,7 +145,8 @@ export default function ResinPage() {
                     position: 'right',
                     title: {
                         display: true,
-                        text: String(selectedProperty3 ? selectedProperty3.name : "Pick a property!")
+                        text: String(selectedProperty3 ? selectedProperty3.name : "Pick a property!"),
+                        padding: 15
                     },
                     grid: {
                         drawOnChartArea: false, 

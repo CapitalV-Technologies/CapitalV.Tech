@@ -1,0 +1,31 @@
+.select-button {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.select-button .p-button {
+  background-color: var(--select-button-gray);
+  color: var(--Primary-Text);
+  padding: .5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px var(--Navbar-Footer);
+  transform: translateY(0); 
+  border: 1px var(--solid-black);
+}
+
+.select-button .p-button.p-highlight {
+  background-color: var(--Primary-Color);
+}
+
+.select-button .p-button:hover:not(.p-highlight) {
+  background-color: var(--Primary-Text);
+  color: var(--light-gray);
+  transform: translateY(-3px);
+  box-shadow: 0 2px 8px var(--Navbar-Footer);
+}
+
+.select-button .p-button.p-highlight {
+  transform: translateY(1px); 
+}
