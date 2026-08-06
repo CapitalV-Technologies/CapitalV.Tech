@@ -1,10 +1,6 @@
 import './SettingsPage.css';
 import { useAuth } from '../../../auth/AuthContext';
-import { SelectButton } from 'primereact/selectbutton';
 import { useState } from "react";
-// import "primereact/resources/themes/lara-light-indigo/theme.css"; 
-// import "primereact/resources/primereact.min.css";                  
-// import "primeicons/primeicons.css";
 import Select_Button from '../../buttons/select_button/Select_Button'
 
 export default function SettingsPage() {
