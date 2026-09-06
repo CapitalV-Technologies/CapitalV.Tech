@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import Classic_Button from '../../buttons/classic_button/Classic_Button.tsx'
 import { supabase } from "../../../services/supabaseClient";
+import dataPhoto from '../../../assets/data-photo.png'
 import './LoginPage.css';
 
 export default function LoginPage() {
@@ -34,7 +34,9 @@ export default function LoginPage() {
     return (
         // Allow ENTER key to call goToApp Function
         <form onSubmit={goToApp}>
-        <div className="login-layout">
+        <div className="login-layout"> 
+            <img src={dataPhoto} alt="Data Photo" width="400" />
+            <br></br>
             <p>ScienceDMA</p>
             <div>
             <InputText placeholder="Username" className="username-input" onChange={(e) => setUsername(e.target.value)} />

@@ -27,6 +27,70 @@ export default function ResinPage() {
     const [chartOptions, setChartOptions] = useState({});
     const chartRef = useRef<Chart>(null);
 
+    // Create Helper functions
+
+    const checkSelectedProperty = (currentDropdown: number, value: Property_t) => {
+        if (currentDropdown == 3) {
+            if (value == null) {
+                setSelectedProperty3(null)
+                return
+            }
+            if (selectedProperty1 == null) {
+                setSelectedProperty1(value)
+                return
+            }
+            if (selectedProperty2 == null) {
+                setSelectedProperty2(value)
+                return
+            }
+            setSelectedProperty3(value)
+            return
+        }
+        if (currentDropdown == 2) {
+            if (value == null) {
+                setSelectedProperty2(null)
+                return
+            }
+            if (selectedProperty1 == null) {
+                setSelectedProperty1(value)
+                return
+            }
+            setSelectedProperty2(value)
+            return
+        }
+    }
+
+     const checkSelectedResin = (currentDropdown: number, value: Resin_t) => {
+        if (currentDropdown == 3) {
+            if (value == null) {
+                setSelectedResin3(null)
+                return
+            }
+            if (selectedResin1 == null) {
+                setSelectedResin1(value)
+                return
+            }
+            if (selectedResin2 == null) {
+                setSelectedResin2(value)
+                return
+            }
+            setSelectedResin3(value)
+            return
+        }
+        if (currentDropdown == 2) {
+            if (value == null) {
+                setSelectedResin2(null)
+                return
+            }
+            if (selectedResin1 == null) {
+                setSelectedResin1(value)
+                return
+            }
+            setSelectedResin2(value)
+            return
+        }
+    }
+
     // This function takes effect on page load
     useEffect(() => {
         getResinsNames();   
@@ -290,9 +354,9 @@ export default function ResinPage() {
 
             <Dropdown value={selectedResin1} onChange={(e) => setSelectedResin1(e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 1" filter={true} filterBy="name" checkmark={true}/>
-            <Dropdown value={selectedResin2} onChange={(e) => setSelectedResin2(e.value)} options={resins} optionLabel="name"
+            <Dropdown value={selectedResin2} onChange={(e) => checkSelectedResin(2, e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 2" filter={true} filterBy="name" checkmark={true}/>
-            <Dropdown value={selectedResin3} onChange={(e) => setSelectedResin3(e.value)} options={resins} optionLabel="name"
+            <Dropdown value={selectedResin3} onChange={(e) => checkSelectedResin(3, e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 3" filter={true} filterBy="name" checkmark={true}/> 
             <div className="titles">
                 <h3> Select Properties </h3>
@@ -303,9 +367,9 @@ export default function ResinPage() {
 
             <Dropdown value={selectedProperty1} onChange={(e) => setSelectedProperty1(e.value)} options={properties} optionLabel="name"
                 showClear placeholder="Select Property 1" filter={true} filterBy="name" checkmark={true}/> 
-            <Dropdown value={selectedProperty2} onChange={(e) => setSelectedProperty2(e.value)} options={properties} optionLabel="name"
+            <Dropdown value={selectedProperty2} onChange={(e) => checkSelectedProperty(2, e.value)} options={properties} optionLabel="name"
                 showClear placeholder="Select Property 2" filter={true} filterBy="name" checkmark={true}/>
-            <Dropdown value={selectedProperty3} onChange={(e) => setSelectedProperty3(e.value)} options={properties} optionLabel="name"
+            <Dropdown value={selectedProperty3} onChange={(e) => checkSelectedProperty(3, e.value)} options={properties} optionLabel="name"
                 showClear placeholder="Select Property 3" filter={true} filterBy="name" checkmark={true}/>
             <div className="refresh-graph-button">
             <Classic_Button label="Refresh Graph" onClick={refreshGraph}></Classic_Button>
