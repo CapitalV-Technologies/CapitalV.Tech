@@ -27,7 +27,7 @@ export default function LoginPage() {
             return;
         }
 
-        navigate('/app/resin');
+        navigate('/app');
 
         };
 

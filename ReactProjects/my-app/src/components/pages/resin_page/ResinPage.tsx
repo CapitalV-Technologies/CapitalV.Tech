@@ -32,6 +32,21 @@ export default function ResinPage() {
     // Create Helper functions
 
     const checkSelectedProperty = (currentDropdown: number, value: Property_t) => {
+        // Check if value has already been picked.
+        if (value != null) {
+            if (selectedProperty1?.name == value.name && currentDropdown != 1) {
+                toastService.showError("This property is already selected")
+                return
+            }
+            if (selectedProperty2?.name == value.name && currentDropdown != 2) {
+                toastService.showError("This property is already selected")
+                return
+            }
+            if (selectedProperty3?.name == value.name && currentDropdown != 3) {
+                toastService.showError("This property is already selected")
+                return
+            }
+        }
         if (currentDropdown == 3) {
             if (value == null) {
                 setSelectedProperty3(null)
@@ -51,6 +66,10 @@ export default function ResinPage() {
         if (currentDropdown == 2) {
             if (value == null) {
                 setSelectedProperty2(null)
+                if (selectedProperty3 != null) {
+                    setSelectedProperty2(selectedProperty3)
+                    setSelectedProperty3(null)
+                }
                 return
             }
             if (selectedProperty1 == null) {
@@ -60,9 +79,40 @@ export default function ResinPage() {
             setSelectedProperty2(value)
             return
         }
+        if (currentDropdown == 1) {
+            if (value == null) {
+                setSelectedProperty1(null)
+                // Check if we can move any other properties up. 
+                if (selectedProperty2 != null) {
+                    setSelectedProperty1(selectedProperty2)
+                    setSelectedProperty2(null)
+                }
+                if (selectedProperty3 != null) {
+                    setSelectedProperty2(selectedProperty3)
+                    setSelectedProperty3(null)
+                }
+                return
+            }
+            setSelectedProperty1(value)
+            return
+        }
     }
 
      const checkSelectedResin = (currentDropdown: number, value: Resin_t) => {
+        if (value != null) {
+            if (selectedResin1?.name == value.name && currentDropdown != 1) {
+                toastService.showError("This resin is already selected")
+                return
+            }
+            if (selectedResin2?.name == value.name && currentDropdown != 2) {
+                toastService.showError("This resin is already selected")
+                return
+            }
+            if (selectedResin3?.name == value.name && currentDropdown != 3) {
+                toastService.showError("This resin is already selected")
+                return
+            }
+        }
         if (currentDropdown == 3) {
             if (value == null) {
                 setSelectedResin3(null)
@@ -82,6 +132,10 @@ export default function ResinPage() {
         if (currentDropdown == 2) {
             if (value == null) {
                 setSelectedResin2(null)
+                if (selectedResin3 != null) {
+                    setSelectedResin2(selectedResin3)
+                    setSelectedResin3(null)
+                }
                 return
             }
             if (selectedResin1 == null) {
@@ -89,6 +143,23 @@ export default function ResinPage() {
                 return
             }
             setSelectedResin2(value)
+            return
+        }
+        if (currentDropdown == 1) {
+            if (value == null) {
+                setSelectedResin1(null)
+                // Check if we can move any other properties up. 
+                if (selectedResin2 != null) {
+                    setSelectedResin1(selectedResin2)
+                    setSelectedResin2(null)
+                }
+                if (selectedResin3 != null) {
+                    setSelectedResin2(selectedResin3)
+                    setSelectedResin3(null)
+                }
+                return
+            }
+            setSelectedResin1(value)
             return
         }
     }
@@ -114,10 +185,6 @@ export default function ResinPage() {
 
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-
         const options = {
             responsive: true,
             maintainAspectRatio: false,
@@ -368,7 +435,7 @@ export default function ResinPage() {
                 <h3> Select Resins </h3>
             </div>
 
-            <Dropdown value={selectedResin1} onChange={(e) => setSelectedResin1(e.value)} options={resins} optionLabel="name"
+            <Dropdown value={selectedResin1} onChange={(e) => checkSelectedResin(1, e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 1" filter={true} filterBy="name" checkmark={true}/>
             <Dropdown value={selectedResin2} onChange={(e) => checkSelectedResin(2, e.value)} options={resins} optionLabel="name"
                 showClear placeholder="Select Resin 2" filter={true} filterBy="name" checkmark={true}/>
@@ -381,7 +448,7 @@ export default function ResinPage() {
             <p> X-axis = temperature</p>
             </div>
 
-            <Dropdown value={selectedProperty1} onChange={(e) => setSelectedProperty1(e.value)} options={properties} optionLabel="name"
+            <Dropdown value={selectedProperty1} onChange={(e) => checkSelectedProperty(1, e.value)} options={properties} optionLabel="name"
                 showClear placeholder="Select Property 1" filter={true} filterBy="name" checkmark={true}/> 
             <Dropdown value={selectedProperty2} onChange={(e) => checkSelectedProperty(2, e.value)} options={properties} optionLabel="name"
                 showClear placeholder="Select Property 2" filter={true} filterBy="name" checkmark={true}/>
