@@ -186,6 +186,12 @@ export default function ResinPage() {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
         const options = {
+            elements: {
+                point: {
+                    radius: 1.5, 
+                    hoverRadius: 5
+                }
+            },
             responsive: true,
             maintainAspectRatio: false,
             aspectRatio: 0.6,
