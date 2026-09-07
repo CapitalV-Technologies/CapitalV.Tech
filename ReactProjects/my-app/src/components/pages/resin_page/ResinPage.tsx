@@ -6,6 +6,8 @@ import { useState, useEffect, useRef } from "react";
 import { getSingularResinData, getResinNames_Helper } from './HelperFunctions.tsx';
 import type {Resin_t, Property_t, Data_t } from './Interfaces.tsx';
 import zoomPlugin from 'chartjs-plugin-zoom';
+import AppToast from '../../toast/Toast.tsx'
+import { toastService} from '../../../services/toastService.tsx'
 
 export default function ResinPage() {
     
@@ -108,15 +110,14 @@ export default function ResinPage() {
         setResins(formattedResins);
     }
 
-    const refreshGraph = async () => {
-
-        getResinsData();
+    const defineOptions = () => {
 
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-        
+
+
         const options = {
             responsive: true,
             maintainAspectRatio: false,
@@ -190,7 +191,7 @@ export default function ResinPage() {
                         drawOnChartArea: false, 
                     },
                 },
-                Property2: {
+                ...(selectedProperty2 && {Property2: {
                     type: 'linear',
                     display: true,
                     position: 'right',
@@ -202,8 +203,9 @@ export default function ResinPage() {
                     grid: {
                         drawOnChartArea: false, 
                     },
-                },
-                Property3: {
+                }
+            }),
+                ...(selectedProperty3 && {Property3: {
                     type: 'linear',
                     display: true,
                     position: 'right',
@@ -216,10 +218,23 @@ export default function ResinPage() {
                         drawOnChartArea: false, 
                     },
                 }
-            }
-        };
+            })
+        }
+    };
 
-        setChartOptions(options);
+        return options
+    }
+
+    const refreshGraph = async () => {
+
+        if ((selectedProperty1 == null) || (selectedResin1 == null)) {
+            toastService.showError("Please select at least one Resin and one Property")
+            return
+        }
+
+        await getResinsData();
+        
+        setChartOptions(defineOptions());
     }
 
 
@@ -346,6 +361,7 @@ export default function ResinPage() {
 
     return (
         <div className="resin-layout">
+            <AppToast />
             <div className="dropdowns">
 
             <div className="titles">

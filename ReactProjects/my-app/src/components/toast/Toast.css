@@ -1,0 +1,51 @@
+/* Used AI to write this styling */
+
+.p-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.p-toast-message-icon {
+    color: var( --Primary-Text);
+}
+
+/* 2. Style the toast notification card */
+.p-toast-message {
+    background-color: var(--error-color);
+    border: 2px var(--solid-black);
+    border-radius: 6px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 12px var(--Navbar-Footer);
+}
+
+/* 3. Layout the content inside the toast */
+.p-toast-message-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 4. Make text visible */
+.p-toast-summary {
+    font-weight: bold;
+    color: var( --Primary-Text);
+    margin-right: 8px;
+}
+
+.p-toast-detail {
+    color: var( --Primary-Text);
+}
+
+/* 5. Style the close button */
+.p-toast-icon-close {
+    background: transparent;
+    border: none;
+    color: var( --Primary-Text);
+    cursor: pointer;
+    margin-left: auto;
+}

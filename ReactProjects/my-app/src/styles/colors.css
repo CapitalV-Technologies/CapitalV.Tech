@@ -6,6 +6,7 @@
     --light-gray: rgb(108, 103, 103);
     --solid-black: solid black;
     --select-button-gray: rgb(171, 168, 168);
+    --error-color: rgb(191, 58, 58);
 }
 
 [color-theme="dark"] {
@@ -15,4 +16,5 @@
     --light-gray: rgb(108, 103, 103);
     --solid-black: solid white;
     --select-button-gray: rgb(171, 168, 168);
+    --error-color: rgb(191, 58, 58);
 }
