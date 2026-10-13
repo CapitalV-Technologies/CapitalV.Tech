@@ -1,0 +1,15 @@
+.home-layout {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+}
+
+.paragraph {
+    padding: 1rem;
+    flex-direction: row;
+    border: 1px var(--solid-black);
+    font-size: larger;
+    margin: 1rem;
+}
